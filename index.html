@@ -89,8 +89,8 @@ function blockHTML(b,hdr){
  if(b.t==='img')return`<img class="shot" src="${b.src}" alt="${b.alt}">`;
  if(b.t==='ul'||b.t==='ol'){const tag=b.t;const subs=b.sub||[];
   return`<${tag}${tag==='ol'&&b.start>1?` start="${b.start}"`:''}>${b.items.map(x=>`<li>${x}</li>`).join('')}</${tag}>`+subs.map(s=>`<ul class="subn">${s.map(x=>`<li>${x}</li>`).join('')}</ul>`).join('')}
- if(b.t==='table'){const rows=b.rows;const head=rows[0]||[];const ci=head.findIndex(h=>/入れる文|入れる物|表に入れる/.test(h));
-  const copyCol=head.some(h=>/入れる文/.test(h))?head.findIndex(h=>/入れる文/.test(h)):-1;
+ if(b.t==='table'){const rows=b.rows;const head=rows[0]||[];const ci=head.findIndex(h=>/入れる文|入れる物/.test(h));
+  const copyCol=head.findIndex(h=>/入れる文|入れる物/.test(h));
   return`<div class="tblw"><table class="items">${rows.map((r,ri)=>`<tr>${r.map((c,i)=>{const th=ri===0;const st=th?' style="background:#eaf0ff;font-weight:800"':'';
    if(!th&&i===copyCol&&c){const ls=c.split('<br>').filter(x=>strip(x));return`<td>${ls.map(l=>`<div class="copycell"><span>${l}</span><button class="copy" data-copy="${strip(l).replace(/"/g,'&quot;')}">コピー</button></div>`).join('')}${ls.length>1?'<div class="small">1行ずつ、「コピー」→貼り付け→Enter を くり返します</div>':''}</td>`}
    return`<td${st}>${c}</td>`}).join('')}</tr>`).join('')}</table></div>`}
