@@ -97,7 +97,7 @@ function blockHTML(b,hdr){
  return''}
 function stepHTML(code,s,i){
  const k=code+'.'+i,d=!!store[k];
- return`<section class="step${d?' done':''}" id="st-${i}"><header><span class="num">${d?'✓':(s.intro?'★':(s.n??i))}</span><h3>${s.t}</h3><label class="ok"><input type="checkbox" data-k="${k}" ${d?'checked':''}>できた</label></header><div class="body">${s.blocks.map(blockHTML).join('')}</div></section>`}
+ return`<section class="step${d?' done':''}" id="st-${i}"><header><span class="num">${d?'✓':(s.intro?'★':(s.n??i))}</span><h3>${s.t}</h3><label class="ok"><input type="checkbox" data-k="${k}" ${d?'checked':''}>できた</label></header><div class="body">${s.blocks.map(blockHTML).join('')}<p class="small" style="margin-top:10px">分からない時は、ここで止まって、職員さんを呼びます。</p></div></section>`}
 function view(){
  const h=location.hash.replace(/^#\/?/,'')||DOCS[0].code;
  $('#tabs').innerHTML=DOCS.map(d=>`<a href="#/${d.code}" class="${d.code===h?'on':''}">${d.label}</a>`).join('');
