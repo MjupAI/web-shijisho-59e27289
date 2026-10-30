@@ -64,7 +64,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #ffb0
 @media print{header.top,nav.tabs,.toast,.copy{display:none}body{background:#fff}.card,.step{box-shadow:none;break-inside:avoid}}
 .navrow{display:flex;gap:10px;margin-top:16px}.navrow .btn{flex:1;border:0;font-size:17px;cursor:pointer}.btn.alt{background:#fff;color:var(--brand-d);border:2px solid var(--brand);cursor:pointer}.btn[disabled]{opacity:.4}.linkbtn{background:none;border:0;color:var(--brand-d);text-decoration:underline;font-size:15px;min-height:44px;cursor:pointer}
 </style>
-<style>.tag{display:inline-block;background:#eaf0ff;color:var(--brand-d);border-radius:8px;padding:0 8px;font-weight:700;font-size:14px}.body ul,.body ol{padding-left:24px;margin:6px 0}.body li{margin:6px 0}.body td{font-size:16px}.copycell{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}.copycell .copy{min-height:36px;padding:0 12px}.tblw{overflow-x:auto}.body h4{margin:16px 0 4px;font-size:17px}.hero{padding:6px 0}.step,.body{min-width:0;overflow-wrap:anywhere}.tblw{max-width:100%}body{overflow-x:hidden}.copycell+.copycell{margin-top:8px}</style>
+<style>.tag{display:inline-block;background:#eaf0ff;color:var(--brand-d);border-radius:8px;padding:0 8px;font-weight:700;font-size:14px}.body ul,.body ol{padding-left:24px;margin:6px 0}.body li{margin:6px 0}.body td{font-size:16px}.copycell{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}.copycell .copy{min-height:36px;padding:0 12px}.tblw{overflow-x:auto}.body h4{margin:16px 0 4px;font-size:17px}.hero{padding:6px 0}.step,.body{min-width:0;overflow-wrap:anywhere}.tblw{max-width:100%}body{overflow-x:hidden}.copycell+.copycell{margin-top:8px}@media(max-width:600px){table.items,table.items tbody,table.items tr,table.items td{display:block;width:100%}table.items tr.hd{display:none}table.items tr{margin:0 0 12px;border:1px solid var(--line);border-radius:10px;overflow:hidden}table.items td{border:0;border-bottom:1px solid var(--line)}table.items td:first-child{width:100%}table.items td::before{content:attr(data-label);display:block;font-size:12px;color:#667;font-weight:700;margin-bottom:2px}}</style>
 </head><body>
 <header class="top"><div class="wrap"><div class="eyebrow">ESPICT SCHOOL</div><h1>かんたんコース　指示書</h1><p>STUDIOのブログに、記事を1本足して、提出します</p><button id="big" class="bigbtn" type="button" aria-pressed="false">文字を大きくする</button></div></header>
 <main class="wrap"><nav class="tabs" id="tabs" aria-label="コースの切り替え"></nav><div id="view" class="stack" style="margin-top:16px"></div></main>
@@ -91,9 +91,9 @@ function blockHTML(b,hdr){
   return`<${tag}${tag==='ol'&&b.start>1?` start="${b.start}"`:''}>${b.items.map(x=>`<li>${x}</li>`).join('')}</${tag}>`+subs.map(s=>`<ul class="subn">${s.map(x=>`<li>${x}</li>`).join('')}</ul>`).join('')}
  if(b.t==='table'){const rows=b.rows;const head=rows[0]||[];const ci=head.findIndex(h=>/入れる文|入れる物/.test(h));
   const copyCol=head.findIndex(h=>/入れる文|入れる物/.test(h));
-  return`<div class="tblw"><table class="items">${rows.map((r,ri)=>`<tr>${r.map((c,i)=>{const th=ri===0;const st=th?' style="background:#eaf0ff;font-weight:800"':'';
-   if(!th&&i===copyCol&&c){const ls=c.split('<br>').filter(x=>strip(x));return`<td>${ls.map(l=>`<div class="copycell"><span>${l}</span><button class="copy" data-copy="${strip(l).replace(/"/g,'&quot;')}">コピー</button></div>`).join('')}${ls.length>1?'<div class="small">1行ずつ、「コピー」→貼り付け→Enter を くり返します</div>':''}</td>`}
-   return`<td${st}>${c}</td>`}).join('')}</tr>`).join('')}</table></div>`}
+  return`<div class="tblw"><table class="items">${rows.map((r,ri)=>`<tr${ri===0?' class="hd"':''}>${r.map((c,i)=>{const lb=` data-label="${strip(head[i]||'')}"`;const th=ri===0;const st=th?' style="background:#eaf0ff;font-weight:800"':'';
+   if(!th&&i===copyCol&&c){const ls=c.split('<br>').filter(x=>strip(x));if(ls.length===1&&/\.(png|jpe?g)$|^画面写真|^（?下の「/.test(strip(ls[0]).trim()))return`<td${lb}>${c}</td>`;return`<td${lb}>${ls.map(l=>`<div class="copycell"><span>${l}</span><button class="copy" data-copy="${strip(l).replace(/"/g,'&quot;')}">コピー</button></div>`).join('')}${ls.length>1?'<div class="small">1行ずつ、「コピー」→貼り付け→Enter を くり返します</div>':''}</td>`}
+   return`<td${st}${lb}>${c}</td>`}).join('')}</tr>`).join('')}</table></div>`}
  return''}
 function stepHTML(code,s,i){
  const k=code+'.'+i,d=!!store[k];
